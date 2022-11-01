@@ -49,6 +49,13 @@ Deployment
 StatefulSet 
  + Используется для Stateful-приложений или баз данных (но они часто находятся вне k8s кластера)
  
+Абстракция слоев:
+1. Deployment управляет ReplicaSet
+2. ReplicaSet управляет Pod
+3. Pod абстракция над Container
+4. Container
+Все, что ниже Deployment управляется Kubernetes'ом
+
 ### Архитектура K8s
 Главным компонентом K8s является `worker node` и каждый нод будет иметь несколько подов с контейнерами, работающими на нем. На каждом ноде работает 3 процесса, которые работают для управления этими нодами, а также самой фактической требуемой работы от них, поэтому они и называются `worker node`.
 
@@ -78,12 +85,21 @@ StatefulSet
 
 ### Основные команды K8s
 
-`kubectl create deployment [name] --image=[image] [opts]` - создать deployment
-`kubectl edit deployment [name]` - редактировать deployment
-`kubectl delete deployment [name]` - удалить deployment
-`kubectl get nodes | pod | services | replicaset | deployment` - для просмотра статуса различных компонентов
-`kubectl logs [pod name]` - для просмотра логов пода
-`kubectl exec -it [pod name]` - для подключения к поду через консоль
+• `kubectl create deployment [name] --image=[image] [opts]` - создать deployment
+
+• `kubectl edit deployment [name]` - редактировать deployment
+
+• `kubectl delete deployment [name]` - удалить deployment
+
+• `kubectl describe [pod name]` - возвращает расширенную информацию о поде
+
+• `kubectl get nodes | pod | services | replicaset | deployment` - для просмотра статуса различных компонентов
+
+• `kubectl logs [pod name]` - для просмотра логов пода
+
+• `kubectl exec -it [pod name]` - для подключения к поду через консоль
+
+• `kubectl apply -f [file name]` - подключает файл конфигурации
 
 ### K8s YAML файл
 ### Демо
