@@ -93,7 +93,7 @@ StatefulSet
 
 • `kubectl describe [pod name]` - возвращает расширенную информацию о поде
 
-• `kubectl get nodes | pod | services | replicaset | deployment` - для просмотра статуса различных компонентов
+• `kubectl get nodes | pod | services | replicaset | deployment [-o wide для доп инфы]` - для просмотра статуса различных компонентов
 
 • `kubectl logs [pod name]` - для просмотра логов пода
 
@@ -101,7 +101,62 @@ StatefulSet
 
 • `kubectl apply -f [file name]` - подключает файл конфигурации
 
+Больше команд команд на [официальном сайте](//kubernetes.io/ru/docs/reference/kubectl/overview/) или `kubectl --help`
+
 ### K8s YAML файл
+
+В файле `.yaml` создаваемого объекта Kubernetes необходимо указать значения для следующих полей:
+
+• __apiVersion__ — используемая для создания объекта версия API Kubernete
+
+• __metadata__ — данные, позволяющие идентифицировать объект (`name`, `UID` и необязательное поле `namespace`)
+
+• __spec__ — требуемое состояние объекта
+
+• __kind__ — тип создаваемого объекта
+
+Конкретный формат поля-объекта spec зависит от типа объекта Kubernetes и содержит вложенные поля, предназначенные только для используемого объекта.
+
+Пример конфигурации:
+
+__Deployment__
+```yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template: # template описывает конфигурацию для pod'а
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.16
+        ports:
+        - containerPort: 8080
+```
+__Service_
+```yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+```
 ### Демо
 
 
